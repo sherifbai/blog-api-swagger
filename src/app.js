@@ -23,6 +23,9 @@ const swaggerOptions = {
       {
         url: 'http://localhost:5000',
       },
+      {
+        url: 'https://blog-api-swagger.herokuapp.com/api-docs'
+      }
     ],
   },
   apis: ['./src/routes/*.js'],

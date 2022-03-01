@@ -21,3 +21,9 @@ npm run start
 ```
 https://app.swaggerhub.com/apis/sherifbai/blog-api/1.0.0
 ```
+
+## Heroku url
+
+```
+https://blog-api-swagger.herokuapp.com/api-docs
+```
