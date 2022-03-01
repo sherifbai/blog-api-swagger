@@ -1,0 +1,244 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Blog API",
+    "version": "1.0.0",
+    "description": "Simple blog API"
+  },
+  "servers": [{ "url": "http://localhost:5000" }],
+  "paths": {
+    "/api/message/create": {
+      "post": {
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Create a new message",
+        "consumes": ["multipart/form-data"],
+        "tags": ["Messages"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "array",
+                "$ref": "#/components/schemas/Message"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The message created",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/message": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Returns the list of all the messages",
+        "tags": ["Messages"],
+        "responses": {
+          "200": {
+            "description": "The list of al the books",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Message" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/message/{id}": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Return the message by ID",
+        "tags": ["Messages"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "The message ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The message by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": { "$ref": "#/components/schemas/Message" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/message/update/{id}": {
+      "put": {
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Return updated message",
+        "tags": ["Messages"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "The message ID"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "array",
+                "$ref": "#/components/schemas/Message"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "update the message by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": { "$ref": "#/components/schemas/Message" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/message/delete/{id}": {
+      "delete": {
+        "security": [{ "bearerAuth": [] }],
+        "summary": "Delete message",
+        "tags": ["Messages"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "The message ID"
+          }
+        ],
+        "responses": { "200": { "description": "update the message by ID" } }
+      }
+    },
+    "/api/user/signup": {
+      "post": {
+        "summary": "Return registered user",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "username": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/signin": {
+      "post": {
+        "summary": "Return token and user id",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User logged in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": { "type": "string" },
+                    "userId": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Message": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "description": "Text of the book" },
+          "image": {
+            "type": "file",
+            "format": "binary",
+            "description": "ImageUrl of the book (if it has the image)"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "tags": [
+    { "name": "Messages", "description": "The messages managing api" },
+    { "name": "Auth", "description": "Auth managing API" }
+  ]
+}
